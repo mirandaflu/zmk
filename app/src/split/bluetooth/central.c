@@ -270,6 +270,35 @@ static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
     struct peripheral_slot *slot = peripheral_slot_for_conn(conn);
     if (slot == NULL) {
         LOG_ERR("No peripheral state found for connection");
+    if (!bt_uuid_cmp(discover_params.uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_SERVICE_UUID))) {
+        memcpy(&uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_CHAR_POSITION_STATE_UUID), sizeof(uuid));
+        discover_params.uuid = &uuid.uuid;
+        discover_params.start_handle = attr->handle + 1;
+        discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
+
+        err = bt_gatt_discover(conn, &discover_params);
+        if (err) {
+            LOG_ERR("Discover failed (err %d)", err);
+        }
+    } else if (!bt_uuid_cmp(discover_params.uuid,
+                            BT_UUID_DECLARE_128(ZMK_SPLIT_BT_CHAR_POSITION_STATE_UUID))) {
+        memcpy(&uuid, BT_UUID_GATT_CCC, sizeof(uuid));
+        discover_params.uuid = &uuid.uuid;
+        discover_params.start_handle = attr->handle + 2;
+        discover_params.type = BT_GATT_DISCOVER_DESCRIPTOR;
+        subscribe_params.value_handle = bt_gatt_attr_value_handle(attr);
+
+        err = bt_gatt_discover(conn, &discover_params);
+        if (err) {
+            LOG_ERR("Discover failed (err %d)", err);
+        }
+    } else {
+        slot->subscribe_params.notify = split_central_notify_func;
+        slot->subscribe_params.value = BT_GATT_CCC_NOTIFY;
+        slot->subscribe_params.ccc_handle = attr->handle;
+
+        split_central_subscribe(conn);
+
         return BT_GATT_ITER_STOP;
     }
 
