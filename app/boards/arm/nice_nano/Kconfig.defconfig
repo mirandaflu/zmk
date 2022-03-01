@@ -37,6 +37,11 @@ endif # BOARD_NICE_NANO
 if BOARD_NICE_NANO_V2
 
 config ZMK_BATTERY_NRF_VDDH
+	bool "ZMK nRF VDDH battery monitoring"
+	select ADC
+	select ZMK_BATTERY
+	help
+		Enable ZMK nRF VDDH voltage driver for battery monitoring.
 	default y
 
 endif # BOARD_NICE_NANO_V2
