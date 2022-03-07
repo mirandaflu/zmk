@@ -293,6 +293,8 @@ static uint8_t split_central_sensor_desc_discovery_func(struct bt_conn *conn,
 static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
                                                  const struct bt_gatt_attr *attr,
                                                  struct bt_gatt_discover_params *params) {
+    struct peripheral_slot *slot = peripheral_slot_for_conn(conn);
+
     if (!attr) {
         LOG_DBG("Discover complete");
         return BT_GATT_ITER_STOP;
@@ -308,9 +310,9 @@ static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
     if (!bt_uuid_cmp(((struct bt_gatt_chrc *)attr->user_data)->uuid,
                      BT_UUID_DECLARE_128(ZMK_SPLIT_BT_CHAR_POSITION_STATE_UUID))) {
         LOG_DBG("Found position state characteristic");
-        discover_params.uuid = NULL;
-        discover_params.start_handle = attr->handle + 2;
-        discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
+        slot->discover_params.uuid = NULL;
+        slot->discover_params.start_handle = attr->handle + 2;
+        slot->discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
 
         subscribe_params.disc_params = &sub_discover_params;
         subscribe_params.end_handle = discover_params.end_handle;
