@@ -338,7 +338,7 @@ static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
 
     LOG_DBG("[ATTRIBUTE] handle %u", attr->handle);
 
-    if (bt_uuid_cmp(discover_params.uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_SERVICE_UUID))) {
+    if (bt_uuid_cmp(slot->discover_params.uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_SERVICE_UUID))) {
         LOG_DBG("Found other service");
         return BT_GATT_ITER_CONTINUE;
     }
