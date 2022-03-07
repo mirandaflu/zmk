@@ -314,7 +314,7 @@ static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
         slot->discover_params.start_handle = attr->handle + 2;
         slot->discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
 
-        slot->subscribe_params.disc_params = &sub_discover_params;
+        slot->subscribe_params.disc_params = &slot->sub_discover_params;
         slot->subscribe_params.end_handle = slot->discover_params.end_handle;
         slot->subscribe_params.value_handle = bt_gatt_attr_value_handle(attr);
         slot->subscribe_params.notify = split_central_notify_func;
