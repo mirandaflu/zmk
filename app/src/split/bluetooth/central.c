@@ -341,6 +341,7 @@ static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
     struct peripheral_slot *slot = peripheral_slot_for_conn(conn);
     if (slot == NULL) {
         LOG_ERR("No peripheral state found for connection");
+    }
     if (!bt_uuid_cmp(slot->discover_params.uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_SERVICE_UUID))) {
         memcpy(&split_service_uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_CHAR_POSITION_STATE_UUID), sizeof(split_service_uuid));
         slot->discover_params.uuid = &split_service_uuid.uuid;
