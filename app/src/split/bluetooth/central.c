@@ -328,6 +328,8 @@ static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
 static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
                                                     const struct bt_gatt_attr *attr,
                                                     struct bt_gatt_discover_params *params) {
+    int err;
+
     if (!attr) {
         LOG_DBG("Discover complete");
         (void)memset(params, 0, sizeof(*params));
@@ -397,7 +399,7 @@ static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
     slot->discover_params.start_handle = attr->handle + 1;
     slot->discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
 
-    int err = bt_gatt_discover(conn, &slot->discover_params);
+    err = bt_gatt_discover(conn, &slot->discover_params);
     if (err) {
         LOG_ERR("Failed to start discovering split service characteristics (err %d)", err);
     }
