@@ -314,15 +314,15 @@ static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
         slot->discover_params.start_handle = attr->handle + 2;
         slot->discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
 
-        subscribe_params.disc_params = &sub_discover_params;
-        subscribe_params.end_handle = discover_params.end_handle;
-        subscribe_params.value_handle = bt_gatt_attr_value_handle(attr);
-        subscribe_params.notify = split_central_notify_func;
-        subscribe_params.value = BT_GATT_CCC_NOTIFY;
+        slot->subscribe_params.disc_params = &sub_discover_params;
+        slot->subscribe_params.end_handle = slot->discover_params.end_handle;
+        slot->subscribe_params.value_handle = bt_gatt_attr_value_handle(attr);
+        slot->subscribe_params.notify = split_central_notify_func;
+        slot->subscribe_params.value = BT_GATT_CCC_NOTIFY;
         split_central_subscribe(conn);
     }
 
-    return subscribe_params.value_handle ? BT_GATT_ITER_STOP : BT_GATT_ITER_CONTINUE;
+    return slot->subscribe_params.value_handle ? BT_GATT_ITER_STOP : BT_GATT_ITER_CONTINUE;
 }
 
 static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
