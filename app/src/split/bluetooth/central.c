@@ -328,37 +328,6 @@ static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
 static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
                                                     const struct bt_gatt_attr *attr,
                                                     struct bt_gatt_discover_params *params) {
-    struct peripheral_slot *slot = peripheral_slot_for_conn(conn);
-
-    if (!attr) {
-        LOG_DBG("Discover complete");
-        (void)memset(params, 0, sizeof(*params));
-        return BT_GATT_ITER_STOP;
-    }
-
-    LOG_DBG("[ATTRIBUTE] handle %u", attr->handle);
-
-    if (bt_uuid_cmp(slot->discover_params.uuid, BT_UUID_DECLARE_128(ZMK_SPLIT_BT_SERVICE_UUID))) {
-        LOG_DBG("Found other service");
-        return BT_GATT_ITER_CONTINUE;
-    }
-
-    LOG_DBG("Found split service");
-    slot->discover_params.uuid = NULL;
-    slot->discover_params.func = split_central_chrc_discovery_func;
-    slot->discover_params.start_handle = attr->handle + 1;
-    slot->discover_params.type = BT_GATT_DISCOVER_CHARACTERISTIC;
-
-    int err = bt_gatt_discover(conn, &slot->discover_params);
-    if (err) {
-        LOG_ERR("Failed to start discovering split service characteristics (err %d)", err);
-    }
-    return BT_GATT_ITER_STOP;
-}
-
-static uint8_t split_central_service_discovery_func(struct bt_conn *conn,
-                                                    const struct bt_gatt_attr *attr,
-                                                    struct bt_gatt_discover_params *params) {
     if (!attr) {
         LOG_DBG("Discover complete");
         (void)memset(params, 0, sizeof(*params));
