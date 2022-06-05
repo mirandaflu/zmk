@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+#define DT_DRV_COMPAT zmk_behavior_mouse_move
+
 #include <drivers/sensor.h>
 #include <logging/log.h>
 #include <zmk/hid.h>
@@ -11,6 +13,8 @@
 #include <zmk/trackball_pim447.h>
 
 LOG_MODULE_REGISTER(PIM447, CONFIG_SENSOR_LOG_LEVEL);
+
+#if DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT)
 
 #define MOVE_FACTOR    DT_PROP(DT_INST(0, pimoroni_trackball_pim447), move_factor)
 #define MOVE_X_INVERT  DT_PROP(DT_INST(0, pimoroni_trackball_pim447), invert_move_x)
@@ -196,3 +200,5 @@ int zmk_trackball_pim447_init()
 }
 
 SYS_INIT(zmk_trackball_pim447_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
+
+#endif /* DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT) */
