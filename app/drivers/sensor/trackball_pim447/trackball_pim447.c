@@ -13,6 +13,8 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(trackball_pim447);
 
+#if DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT)
+
 #define TRACKBALL_PIM447_REG_LEFT   0x04
 #define TRACKBALL_PIM447_REG_RIGHT  0x05
 #define TRACKBALL_PIM447_REG_UP     0x06
@@ -165,3 +167,5 @@ static const struct sensor_driver_api trackball_pim447_api = {
 DEVICE_DT_INST_DEFINE(0, &trackball_pim447_init, device_pm_control_nop,
                       &trackball_pim447_data, NULL, POST_KERNEL,
                       CONFIG_SENSOR_INIT_PRIORITY, &trackball_pim447_api);
+
+#endif /* DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT) */
