@@ -27,7 +27,7 @@ LOG_MODULE_REGISTER(PIM447, CONFIG_SENSOR_LOG_LEVEL);
 #define BUTTON    DT_PROP(DT_INST(0, pimoroni_trackball_pim447), button)
 #define SWAP_AXES DT_PROP(DT_INST(0, pimoroni_trackball_pim447), swap_axes)
 
-static int mode = DT_PROP(DT_INST(0, pimoroni_trackball_pim447), mode);
+static int mode = PIM447_MOVE; // DT_PROP(DT_INST(0, pimoroni_trackball_pim447), mode);
 
 void zmk_trackball_pim447_set_mode(int new_mode)
 {
