@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#define DT_DRV_COMPAT zmk_behavior_mouse_move
+#define DT_DRV_COMPAT pimoroni_trackball_pim447
 
 #include <drivers/sensor.h>
 #include <logging/log.h>
